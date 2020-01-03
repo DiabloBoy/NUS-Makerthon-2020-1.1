@@ -28,7 +28,7 @@ SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
 
-int limit = 150;
+int limit = 20;
 int heart_rate;
 int inPin = 2;
 int val = 0;
@@ -55,7 +55,7 @@ void setup()
   Serial.println(F("DFPlayer Mini online."));
   
   myDFPlayer.volume(30);  //Set volume value. From 0 to 30
-  
+  //myDFPlayer.play(1); 
   
 }
 
@@ -73,7 +73,6 @@ void loop()
           myDFPlayer.play(1);
           val = digitalRead(inPin);
           delay(10000);
-          
           //Pause Playback if push button is pressed
           if (val == HIGH){ 
             myDFPlayer.pause();}

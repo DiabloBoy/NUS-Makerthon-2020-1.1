@@ -37,7 +37,7 @@ void setup()
 {
   mySoftwareSerial.begin(9600);
   // Baud rate
-  Serial.begin(9600);
+  Serial.begin(115200);
   Wire.begin();
   
   Serial.println();
@@ -56,7 +56,6 @@ void setup()
   
   myDFPlayer.volume(30);  //Set volume value. From 0 to 30
   
-  
 }
 
 void loop()
@@ -67,21 +66,15 @@ void loop()
         //Serial.println(c, DEC);
          heart_rate = int(c);
         Serial.println(heart_rate);
-
-        if(heart_rate > limit ) {
-          Serial.println("True");
-          myDFPlayer.play(1);
-          val = digitalRead(inPin);
-          delay(10000);
-          
-          //Pause Playback if push button is pressed
-          if (val == HIGH){ 
-            myDFPlayer.pause();}
-          }
-        
         }
 
-  
+      if(heart_rate > limit ) {
+      myDFPlayer.play(1);
+      val = digitalRead(inPin);
+      //Pause Playback if push button is pressed
+      if (val == HIGH){ 
+        myDFPlayer.pause();}
+      }
       
    
 
@@ -135,7 +128,7 @@ void printDetail(uint8_t type, int value){
         case CheckSumNotMatch:
           Serial.println(F("Check Sum Not Match"));
           break;
-        case FileIndexOut:
+        case FileIndexOut:s
           Serial.println(F("File Index Out of Bound"));
           break;
         case FileMismatch:

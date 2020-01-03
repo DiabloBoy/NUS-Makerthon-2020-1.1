@@ -28,7 +28,7 @@ SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
 DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
 
-int limit = 150;
+int limit = 80;
 int heart_rate;
 int inPin = 2;
 int val = 0;
@@ -37,7 +37,7 @@ void setup()
 {
   mySoftwareSerial.begin(9600);
   // Baud rate
-  Serial.begin(9600);
+  Serial.begin(115200);
   Wire.begin();
   
   Serial.println();
@@ -54,8 +54,7 @@ void setup()
   }
   Serial.println(F("DFPlayer Mini online."));
   
-  myDFPlayer.volume(30);  //Set volume value. From 0 to 30
-  
+  myDFPlayer.volume(15);  //Set volume value. From 0 to 30
   
 }
 
@@ -67,29 +66,27 @@ void loop()
         //Serial.println(c, DEC);
          heart_rate = int(c);
         Serial.println(heart_rate);
+        }
 
-        if(heart_rate > limit ) {
-          Serial.println("True");
-          myDFPlayer.play(1);
-          val = digitalRead(inPin);
-          delay(10000);
+      if(heart_rate > limit ) {
+        myDFPlayer.play(1);
+        //Pause Playback if push button is pressed
+        for(int counter = 0 ; counter < 500; counter ++){
+          delay(100);
           
-          //Pause Playback if push button is pressed
+          val = digitalRead(inPin);
           if (val == HIGH){ 
             myDFPlayer.pause();}
           }
-        
-        }
-
-  
-      
+      }
    
 
   
-  if (myDFPlayer.available()) {
-    printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.
-  }
-  delay(500);
+//  if (myDFPlayer.available()) {
+//    printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.
+//  }
+//  delay(500);
+
 }
 
 void printDetail(uint8_t type, int value){

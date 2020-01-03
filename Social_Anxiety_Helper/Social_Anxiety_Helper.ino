@@ -56,36 +56,31 @@ void setup()
   
   myDFPlayer.volume(15);  //Set volume value. From 0 to 30
   
+    Wire.requestFrom(0xA0 >> 1, 1);         // request 1 bytes from slave device
+  
 }
 
 void loop()
 {
-  Wire.requestFrom(0xA0 >> 1, 1);         // request 1 bytes from slave device
-    while(Wire.available()) {            // slave may send less than requested
         unsigned char c = Wire.read();   // receive heart rate value (a byte)
         //Serial.println(c, DEC);
-         heart_rate = int(c);
+        heart_rate = int(c);
         Serial.println(heart_rate);
-        }
 
       if(heart_rate > limit ) {
         myDFPlayer.play(1);
         //Pause Playback if push button is pressed
         for(int counter = 0 ; counter < 500; counter ++){
-          delay(100);
-          
-          val = digitalRead(inPin);
-          if (val == HIGH){ 
-            myDFPlayer.pause();}
-          }
+            delay(100);            
+            val = digitalRead(inPin);
+            if (val == HIGH){ 
+              myDFPlayer.pause();
+              break;
+            }
+        }
       }
    
 
-  
-//  if (myDFPlayer.available()) {
-//    printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.
-//  }
-//  delay(500);
 
 }
 
